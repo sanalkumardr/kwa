@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kwa-config
+  labels: { app: kwa-api }
+data:
+  # Non-secret runtime config. Secrets (DATABASE_URL, JWT_SECRET, SMS key)
+  # live in the Secret, not here.
+  PORT: "3000"
+  # Photo storage: prefer s3 in prod (drop the uploads PVC). 'local' uses UPLOAD_DIR.
+  STORAGE_PROVIDER: "s3"
+  UPLOAD_DIR: "/data/uploads"
+  S3_BUCKET: "kwa-uploads"
+  S3_REGION: "ap-south-1"
+  S3_FORCE_PATH_STYLE: "false"
+  SMS_PROVIDER: "http" # 'log' for non-prod
+  SMS_MESSAGE_TEMPLATE: "Your KWA Pipeline Works code is {code}. Valid 5 minutes."
+  OTP_DEV_ECHO: "false" # NEVER true in production

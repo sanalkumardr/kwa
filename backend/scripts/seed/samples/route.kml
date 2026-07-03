@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Neyyar WSS Reach-2 alignment</name>
+    <Placemark>
+      <name>Reach 2A</name>
+      <LineString>
+        <coordinates>
+          77.00000,8.50000,0 77.00450,8.50420,0 77.00900,8.50900,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark>
+      <name>Reach 2B</name>
+      <LineString>
+        <coordinates>
+          77.00900,8.50900,0 77.01500,8.51500,0 77.02100,8.52050,0
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Document>
+</kml>

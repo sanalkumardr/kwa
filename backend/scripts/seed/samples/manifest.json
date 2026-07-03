@@ -1,0 +1,20 @@
+{
+  "user": "22222222-0000-0000-0000-000000000001",
+  "edition": {
+    "code": "KWA-2025-26",
+    "title": "KWA Schedule of Rates 2025-26",
+    "authority": "KWA",
+    "from": "2025-04-01",
+    "file": "sor.csv"
+  },
+  "projects": [
+    {
+      "id": "55555555-0000-0000-0000-000000000001",
+      "tenderPremiumPct": 4.5,
+      "routeFile": "route.kml",
+      "diameterMm": 300,
+      "material": "DI",
+      "startKm": 0
+    }
+  ]
+}

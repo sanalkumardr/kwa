@@ -1,0 +1,30 @@
+name: kwa_mobile
+description: KWA Pipeline Works — offline-first field app (Phase 0: DPR sync slice)
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1 # state management (spec: Riverpod 2.x)
+  sqflite: ^2.3.3 # local SQLite store (no codegen)
+  path: ^1.9.0
+  path_provider: ^2.1.3 # app dirs for db + queued photos
+  dio: ^5.4.3 # HTTP client with interceptors + retry
+  connectivity_plus: ^6.0.3 # detect reconnect to trigger sync
+  uuid: ^4.4.0 # client-generated ids (offline-safe primary keys)
+  flutter_map: ^6.1.0 # route polyline rendering (spec: flutter_map + OSM/MapTiler)
+  latlong2: ^0.9.1 # LatLng type used by flutter_map
+  geolocator: ^12.0.0 # GPS fix for DPR location tagging
+  image_picker: ^1.1.2 # capture site photos for DPRs
+  flutter_secure_storage: ^9.2.2 # persist the JWT across app restarts
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true

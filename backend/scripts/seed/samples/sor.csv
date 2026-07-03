@@ -1,0 +1,7 @@
+item_code,description,unit,base_rate,chapter
+WS-12.4,Laying DI pipe 300mm,m,1200.00,pipe-laying
+WS-15.2,Laying DI pipe 200mm,m,950.00,pipe-laying
+EW-3.1,Earthwork excavation in soil,m3,250.00,earthwork
+EW-3.4,Earthwork excavation in hard rock,m3,1450.00,earthwork
+VL-2.1,Sluice valve 200mm with chamber,no,18500.00,valves
+TS-1.2,Hydrostatic pressure test per reach,no,3200.00,testing

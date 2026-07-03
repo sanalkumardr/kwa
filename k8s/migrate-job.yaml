@@ -1,0 +1,46 @@
+# Applies the SQL migrations as the kwa_app role (DATABASE_URL from the Secret).
+# Prerequisite: a DBA has already created the kwa_app role, the kwa database
+# (owned by kwa_app), and the postgis + pgcrypto extensions — exactly what
+# db/init/00_init.sh does for local Docker. The migrations themselves run as
+# kwa_app so FORCE ROW LEVEL SECURITY binds.
+#
+# The migration SQL is provided via a ConfigMap built from the migrations dir:
+#   kubectl create configmap kwa-migrations --from-file=migrations/
+# (re-create it whenever migrations change, then re-run this Job).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kwa-migrate
+  labels: { app: kwa-api }
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels: { app: kwa-api, job: migrate }
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: postgis/postgis:16-3.4 # provides psql
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: { name: kwa-secrets, key: DATABASE_URL }
+          command: ["bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              for f in $(ls /migrations/*.sql | sort); do
+                case "$f" in
+                  *seed*) echo "skipping demo seed $(basename "$f")"; continue;;
+                esac
+                echo "applying $(basename "$f")"
+                psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$f"
+              done
+              echo "migrations done"
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+      volumes:
+        - name: migrations
+          configMap: { name: kwa-migrations }

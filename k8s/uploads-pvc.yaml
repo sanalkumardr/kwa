@@ -1,0 +1,12 @@
+# Local-disk uploads (Phase 0). For production prefer S3-compatible object
+# storage and drop this PVC; the upload controller is isolated for that swap.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kwa-uploads
+  labels: { app: kwa-api }
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 20Gi

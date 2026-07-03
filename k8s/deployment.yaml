@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kwa-api
+  labels: { app: kwa-api }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: kwa-api }
+  template:
+    metadata:
+      labels: { app: kwa-api }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: api
+          image: kwa-backend:latest # push your built image; pin a tag in prod
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef: { name: kwa-config }
+            - secretRef: { name: kwa-secrets }
+          # Liveness: is the process up? Readiness: is the DB reachable?
+          # /health and /health/ready are served by the app (HealthController).
+          livenessProbe:
+            httpGet: { path: /health, port: 3000 }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /health/ready, port: 3000 }
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests: { cpu: "100m", memory: "192Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+          # Only needed when STORAGE_PROVIDER=local. With S3 (the config default)
+          # you can delete this mount, the volume below, and uploads-pvc.yaml.
+          volumeMounts:
+            - name: uploads
+              mountPath: /data/uploads
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: kwa-uploads

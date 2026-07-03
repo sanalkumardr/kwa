@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kwa-api
+  labels: { app: kwa-api }
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "25m" # allow photo uploads
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.kwa.example.gov.in # replace with your host
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kwa-api
+                port: { number: 80 }
+  # tls:
+  #   - hosts: [api.kwa.example.gov.in]
+  #     secretName: kwa-api-tls
