@@ -12,7 +12,8 @@ dist/
 *.key
 
 # ── Uploaded files (local-disk storage; use S3 in prod) ─────────────
-uploads/
+# root-anchored: a bare "uploads/" would also swallow backend/src/uploads/
+/uploads/
 backend/uploads/
 /data/
 
