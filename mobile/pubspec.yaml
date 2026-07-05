@@ -1,5 +1,5 @@
 name: kwa_mobile
-description: KWA Pipeline Works — offline-first field app (Phase 0: DPR sync slice)
+description: "KWA Pipeline Works — offline-first field app (Phase 0: DPR sync slice)"
 publish_to: "none"
 version: 0.1.0+1
 
