@@ -44,6 +44,9 @@ services:
       JWT_SECRET: dev-secret-change-me
       UPLOAD_DIR: /data/uploads
       PORT: "3000"
+      # local dev only: return the OTP in the response so the app pre-fills it
+      # (RUNNING.md relies on this; must stay false/unset in prod)
+      OTP_DEV_ECHO: "true"
     ports:
       - "3000:3000"
     volumes:
