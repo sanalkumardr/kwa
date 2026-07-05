@@ -37,12 +37,15 @@ spec:
           resources:
             requests: { cpu: "100m", memory: "192Mi" }
             limits: { cpu: "500m", memory: "512Mi" }
-          # Only needed when STORAGE_PROVIDER=local. With S3 (the config default)
-          # you can delete this mount, the volume below, and uploads-pvc.yaml.
-          volumeMounts:
-            - name: uploads
-              mountPath: /data/uploads
-      volumes:
-        - name: uploads
-          persistentVolumeClaim:
-            claimName: kwa-uploads
+          # STORAGE_PROVIDER=s3 (the config default) needs no volume. For
+          # STORAGE_PROVIDER=local instead: apply uploads-pvc.yaml, set
+          # replicas: 1 (the PVC is ReadWriteOnce — a second pod on another
+          # node cannot attach it, and the pods would not share files anyway),
+          # and uncomment the mount below.
+          # volumeMounts:
+          #   - name: uploads
+          #     mountPath: /data/uploads
+      # volumes:
+      #   - name: uploads
+      #     persistentVolumeClaim:
+      #       claimName: kwa-uploads

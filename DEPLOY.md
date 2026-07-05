@@ -122,7 +122,9 @@ kubectl wait --for=condition=complete job/kwa-migrate --timeout=120s
 
 ```bash
 kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml -f k8s/hpa.yaml -f k8s/ingress.yaml
-# uploads-pvc.yaml only if STORAGE_PROVIDER=local; with S3 (config default) skip it
+# With S3 (config default) that's all. For STORAGE_PROVIDER=local instead:
+# apply uploads-pvc.yaml, uncomment the uploads volume/mount in deployment.yaml,
+# and set replicas: 1 (the PVC is ReadWriteOnce).
 ```
 
 **f. Smoke test**:

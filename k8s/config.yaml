@@ -16,3 +16,7 @@ data:
   SMS_PROVIDER: "http" # 'log' for non-prod
   SMS_MESSAGE_TEMPLATE: "Your KWA Pipeline Works code is {code}. Valid 5 minutes."
   OTP_DEV_ECHO: "false" # NEVER true in production
+  # Set to an admin user's uuid (authority-wide scope) once users are
+  # bootstrapped — enables the daily milestone alert scan. Until then the
+  # cron logs "SYSTEM_USER_ID not set" and skips.
+  # SYSTEM_USER_ID: "<admin-user-uuid>"
