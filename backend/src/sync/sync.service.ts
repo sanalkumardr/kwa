@@ -103,6 +103,16 @@ export class SyncService {
         }
       }
 
+      // One DPR per (project, report_date): if that day already has a report
+      // under a different id (another device's offline entry, or seed data),
+      // merge into it — last-write-wins, same policy as the id conflict below.
+      // The echoed row carries the winning id for the client to adopt.
+      const existing = await c.query<{ id: string }>(
+        'SELECT id FROM kwa.dpr WHERE project_id = $1 AND report_date = $2',
+        [j.projectId, j.reportDate],
+      );
+      const targetId = existing.rows[0]?.id ?? j.id;
+
       const { rows } = await c.query<DprRow>(
         `INSERT INTO kwa.dpr
            (id, project_id, report_date, weather, length_laid_today_m,
@@ -126,7 +136,7 @@ export class SyncService {
            segment_id          = EXCLUDED.segment_id
          RETURNING ${DPR_SELECT}`,
         [
-          j.id,
+          targetId,
           j.projectId,
           j.reportDate,
           j.weather ?? null,

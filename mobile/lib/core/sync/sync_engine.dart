@@ -115,6 +115,12 @@ class SyncEngine {
       try {
         if (entity == 'dpr') {
           final serverRow = await api.pushDpr(payload);
+          // The server may merge into an existing report for the same
+          // project+day and echo the winning id; drop our stale local row —
+          // the pull phase brings the merged one back under the server id.
+          if (serverRow['id'] != entityId) {
+            await _db.delete('dpr', where: 'id = ?', whereArgs: [entityId]);
+          }
           await _db.update(
             'dpr',
             {'synced': 1, 'updated_at': serverRow['updatedAt']},
